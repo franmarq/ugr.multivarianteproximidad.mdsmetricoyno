@@ -1,0 +1,42 @@
+---
+title: "MDS metrico y no metrico"
+author: "franmarq@gmail.com"
+date: '2022-11-13'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE, message = FALSE)
+```
+
+
+```{r data}
+str(eurodist)
+summary(eurodist)
+eurodist2=as.dist(eurodist) #Lo ponemos en la clase dist.
+eurodist2
+```
+
+
+```{r mds}
+library("smacof")
+cmdscale(eurodist2, k = 20, eig = TRUE, add = FALSE, x.ret = FALSE)$eig
+#Hacemos MDS métrico.
+resm.eurodist2 <- smacofSym(eurodist2,2,)
+resm.eurodist2
+summary(resm.eurodist2)
+plot(resm.eurodist2, main="smacofSym(eurodist2,2)")
+```
+
+```{r readdist}
+tabla1<-read.csv("tabla1.csv",header = T)
+```
+
+```{r mdsnometrico}
+tabla1.diss=sim2diss(tabla1,1)
+resnm.tabla1=mds(tabla1, ndim=2, type = "ordinal")
+resnm.tabla1
+summary(resnm.tabla1)
+plot(resnm.tabla1,main='smacofSym(tabla1.diss,ndim=2,metric=FALSE)')
+
+```
